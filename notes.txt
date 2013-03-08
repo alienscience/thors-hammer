@@ -1,0 +1,40 @@
+
+Generate sequences using a peg like grammar:
+
+  xalphas  = oneOrMore( oneOf(alpha, digit, safe, extra, escape));
+  ialpha   = sequence( alpha, zeroOrMore( xalphas ));
+  hostname = sequence( ialpha, zeroOrMore( ".", recurse(4) ));
+  url      = sequence( oneOf( "http","ftp","https" ), "://", hostname, "/" )
+
+  hammer = Hammer.string(url);
+  hammer = Hammer.int(-5,5);
+
+Grammar gives a combinatorial explosion - allow for different samplers.
+
+Try nested loops rather than sampling one field at a time.
+
+Generate valid or slightly invalid data:
+ 
+  data = hammer.getValid(); 
+  data = hammer.getInvalid();
+
+
+Internals
+----------
+
+A sampler samples all the dimensions in a generator:
+
+    generator.start();
+
+    while (true) {
+        Generator g = generator.next();
+        if (g == null) return;          // Finished
+        int r = randomNumber(g.size()); 
+        append(g.get(r));
+    } 
+
+Or if continuations were available:
+    for (Value<T> v : generator.iterator()) {
+       int r = randomNumber(v.size());
+       appendToSample(v.get(r));
+    }
