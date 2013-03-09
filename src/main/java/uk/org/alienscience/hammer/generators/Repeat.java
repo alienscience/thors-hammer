@@ -6,15 +6,15 @@ import uk.org.alienscience.hammer.Selector;
 import java.util.Iterator;
 
 /**
- * TODO: Document
+ * A selector that repeats a node from minCount .. maxCount
  */
-public class Repeat implements Selector {
+public class Repeat<T> extends Selector<T> {
 
-    private final Node node;
+    private final Node<T> node;
     private final int minCount;
     private final int maxCount;
 
-    public Repeat(Node node, int minCount, int maxCount) {
+    public Repeat(Node<T> node, int minCount, int maxCount) {
         this.node = node;
         this.minCount = minCount;
         this.maxCount = maxCount;
@@ -26,12 +26,12 @@ public class Repeat implements Selector {
     }
 
     @Override
-    public Iterable<Node> select(int index) {
+    public Iterable<Node<T>> select(int index) {
         return new RepeatIterator(minCount + index);
     }
 
     // Iterate through the repeats minCount .. length
-    private class RepeatIterator implements Iterable<Node> {
+    private class RepeatIterator implements Iterable<Node<T>> {
         private final int length;
 
         public RepeatIterator(int length) {
@@ -40,8 +40,8 @@ public class Repeat implements Selector {
         }
 
         @Override
-        public Iterator<Node> iterator() {
-            return new Iterator<Node>() {
+        public Iterator<Node<T>> iterator() {
+            return new Iterator<Node<T>>() {
                 private int count = 0;
 
                 @Override
@@ -50,7 +50,7 @@ public class Repeat implements Selector {
                 }
 
                 @Override
-                public Node next() {
+                public Node<T> next() {
                     count++;
                     return node;
                 }

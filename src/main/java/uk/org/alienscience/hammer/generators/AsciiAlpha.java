@@ -5,7 +5,7 @@ import uk.org.alienscience.hammer.Generator;
 /**
  * Generates from the characters A-Z, a-z
  */
-public class AsciiAlpha implements Generator<String> {
+public class AsciiAlpha extends Generator<String> {
 
     @Override
     public String get(int index) {
@@ -20,4 +20,5 @@ public class AsciiAlpha implements Generator<String> {
     public int size() {
         return 52;
     }
+
 }

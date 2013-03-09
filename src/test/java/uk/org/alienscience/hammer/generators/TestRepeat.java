@@ -13,19 +13,19 @@ import static org.junit.Assert.assertEquals;
 public class TestRepeat {
 
     private Literal<String> literal;
-    private Repeat repeat;
+    private Repeat<String> repeat;
 
     @Before
     public void setup() {
         literal = new Literal<String>("a");
-        repeat = new Repeat(literal, 0, 8);
+        repeat = new Repeat<String>(literal, 0, 8);
     }
 
     @Test
     public void testRepeatIteration() {
 
         int count = 0;
-        for (Node n : repeat.select(4)) {
+        for (Node<String> n : repeat.select(4)) {
             count += 1;
             assertEquals("a", ((Generator<String>) n).get(0));
         }
@@ -35,11 +35,11 @@ public class TestRepeat {
 
     @Test
     public void testNestedRepeats() {
-        Repeat outer = new Repeat(repeat, 0, 8);
+        Repeat<String> outer = new Repeat<String>(repeat, 0, 8);
 
         int count = 0;
-        for (Node r : outer.select(4)) {
-            for (Node n : ((Repeat) r).select(2)) {
+        for (Node<String> r : outer.select(4)) {
+            for (Node<String> n : ((Repeat<String>) r).select(2)) {
                 count += 1;
                 assertEquals("a", ((Generator<String>) n).get(0));
             }

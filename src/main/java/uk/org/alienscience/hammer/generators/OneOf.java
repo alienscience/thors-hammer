@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * TODO: Document
+ * Select one of a list of nodes
  */
-public class OneOf implements Selector {
+public class OneOf<T> extends Selector<T> {
 
-    private final List<Node> nodes;
+    private final List<Node<T>> nodes;
 
-    public OneOf(List<Node> nodes) {
+    public OneOf(List<Node<T>> nodes) {
         this.nodes = nodes;
     }
 
@@ -23,11 +23,11 @@ public class OneOf implements Selector {
     }
 
     @Override
-    public Iterable<Node> select(int index) {
+    public Iterable<Node<T>> select(int index) {
         return new OneOfIterator(index);
     }
 
-    private class OneOfIterator implements Iterable<Node> {
+    private class OneOfIterator implements Iterable<Node<T>> {
         private final int index;
 
         public OneOfIterator(int index) {
@@ -35,8 +35,8 @@ public class OneOf implements Selector {
         }
 
         @Override
-        public Iterator<Node> iterator() {
-            return new Iterator<Node>() {
+        public Iterator<Node<T>> iterator() {
+            return new Iterator<Node<T>>() {
                 boolean done = false;
 
                 @Override
@@ -45,7 +45,7 @@ public class OneOf implements Selector {
                 }
 
                 @Override
-                public Node next() {
+                public Node<T> next() {
                     done = true;
                     return nodes.get(index);
                 }
@@ -57,4 +57,5 @@ public class OneOf implements Selector {
             };
         }
     }
+
 }

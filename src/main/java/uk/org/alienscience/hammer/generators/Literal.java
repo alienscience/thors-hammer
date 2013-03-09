@@ -5,7 +5,7 @@ import uk.org.alienscience.hammer.Generator;
 /**
  * A generator that always generates the same value
  */
-public class Literal<T> implements Generator<T> {
+public class Literal<T> extends Generator<T> {
     private final T value;
 
     public Literal(T value) {
