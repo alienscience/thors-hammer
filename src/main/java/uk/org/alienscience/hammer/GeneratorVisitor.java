@@ -2,6 +2,7 @@ package uk.org.alienscience.hammer;
 
 /**
  * Visits a datastructure containing selection and generation nodes
+ * TODO rename to ExpressionVisitor
  */
 public interface GeneratorVisitor<T> {
     public void visit(Selector<T> selector);

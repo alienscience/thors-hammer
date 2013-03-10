@@ -21,19 +21,32 @@ public class Sequence<T> extends Selector<T> {
 
 	@Override
 	public Iterable<Node<T>> select(int index) {
-		return new SequenceIterator<T>(nodes.get(index));
+		return new SequenceIterator();
 	}
 
-	private static class SequenceIterator<T> implements Iterable<Node<T>> {
-
-		public SequenceIterator(Node<T> node) {
-			// TODO Auto-generated constructor stub
-		}
-
+	private class SequenceIterator implements Iterable<Node<T>> {
+	
+		int i = 0;
+		
 		@Override
 		public Iterator<Node<T>> iterator() {
-			// TODO Auto-generated method stub
-			return null;
+			return new Iterator<Node<T>>(){
+
+				@Override
+				public boolean hasNext() {
+					return i < nodes.size();
+				}
+
+				@Override
+				public Node<T> next() {
+					return nodes.get(i++);
+				}
+
+				@Override
+				public void remove() { 
+					throw new UnsupportedOperationException();
+				}
+			};
 		}
 		
 	}
