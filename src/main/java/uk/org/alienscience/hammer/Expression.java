@@ -4,7 +4,7 @@ package uk.org.alienscience.hammer;
  * A node in the generator tree
  * TODO rename to Expression as this class is exposed in the external API
  */
-public interface Node<T> {
+public interface Expression<T> {
 
     /**
      * Returns the number of possibilities in the current node

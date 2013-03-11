@@ -1,15 +1,14 @@
 package uk.org.alienscience;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import uk.org.alienscience.hammer.Node;
+import uk.org.alienscience.hammer.Expression;
 import uk.org.alienscience.hammer.generators.Literal;
 import uk.org.alienscience.hammer.generators.OneOf;
 import uk.org.alienscience.hammer.generators.Repeat;
 import uk.org.alienscience.hammer.generators.Sequence;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *  Thors Hammer
@@ -17,31 +16,33 @@ import uk.org.alienscience.hammer.generators.Sequence;
  */
 public class Hammer<T> {
 
-	private final Node<T> node;
+	private final Expression<T> expression;
 	
-	// Create a Hammer from a node
-	private Hammer(Node<T> node) {
-		this.node = node;
+	// Create a Hammer from a expression
+	private Hammer(Expression<T> expression) {
+		this.expression = expression;
 	}
 
 	public Iterable<T> generateValid() {
-		return ValidValueIterator<T>(node, new HeuristicHybrid());
+        // TODO
+		// return ValidValueIterator<T>(expression, new HeuristicHybrid());
+        return null;
 	}
 	
 	//------ Static helper methods -------------------------------------------
 	
 	/**
 	 * Create a hammer with the given expression
-	 * @param node The expression to used to generate test values
+	 * @param expression The expression to used to generate test values
 	 * @return An object that will generate test data
 	 */
-	public static <U> Hammer<U> create(Node<U> node) {
-		return new Hammer<U>(node);
+	public static <U> Hammer<U> create(Expression<U> expression) {
+		return new Hammer<U>(expression);
 	}
 
 	/**
 	 * Create a hammer with the given expression
-	 * @param node The expression to used to generate test values
+	 * @param value The value to used to generate test values
 	 * @return An object that will generate test data
 	 */
 	public static <U> Hammer<U> create(U value) {
@@ -51,13 +52,13 @@ public class Hammer<T> {
 	
 	/**
 	 * Repeat the given value
-	 * @param node The value to repeat
+	 * @param expression The value to repeat
 	 * @param minCount The minimum number of repeations
 	 * @param maxCount The maximum number of repeations
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Node<U> repeat(Node<U> node, int minCount, int maxCount) {
-		return new Repeat<U>(node, minCount, maxCount);
+	public static <U> Expression<U> repeat(Expression<U> expression, int minCount, int maxCount) {
+		return new Repeat<U>(expression, minCount, maxCount);
 	}
 
 	/**
@@ -67,22 +68,22 @@ public class Hammer<T> {
 	 * @param maxCount The maximum number of repeations
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Node<U> repeat(U value, int minCount, int maxCount) {
+	public static <U> Expression<U> repeat(U value, int minCount, int maxCount) {
 		Literal<U> literal = new Literal<U>(value);
 		return new Repeat<U>(literal, minCount, maxCount);
 	}
 
 	/**
 	 * Returns one of a selection of values
-	 * @param nodes One of these values will be selected
+	 * @param expressions One of these values will be selected
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Node<U> oneOf(Node<U>... nodes) {
-		List<Node<U>> nodeList = new ArrayList<Node<U>>();
-		for (Node<U> n : nodes) {
-			nodeList.add(n);
+	public static <U> Expression<U> oneOf(Expression<U>... expressions) {
+		List<Expression<U>> expressionList = new ArrayList<Expression<U>>();
+		for (Expression<U> n : expressions) {
+			expressionList.add(n);
 		}
-		return new OneOf<U>(nodeList);
+		return new OneOf<U>(expressionList);
 	}
 	
 	/**
@@ -90,23 +91,23 @@ public class Hammer<T> {
 	 * @param nodes One of these values will be selected
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Node<U> oneOf(U... values) {
-		List<Node<U>> nodeList = new ArrayList<Node<U>>();
+	public static <U> Expression<U> oneOf(U... values) {
+		List<Expression<U>> expressionList = new ArrayList<Expression<U>>();
 		for (U v : values) {
 			Literal<U> literal = new Literal<U>(v);
-			nodeList.add(literal);
+			expressionList.add(literal);
 		}
-		return new OneOf<U>(nodeList);
+		return new OneOf<U>(expressionList);
 	}
 
 	/**
 	 * Returns a sequence of values
-	 * @param nodes The values
+	 * @param expressions The values
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Node<U> sequence(Node<U>...nodes) {
+	public static <U> Expression<U> sequence(Expression<U>... expressions) {
 		// TODO check this 
-		return new Sequence<U>(Arrays.asList(nodes));
+		return new Sequence<U>(Arrays.asList(expressions));
 	}
 	
 	/**
@@ -114,12 +115,12 @@ public class Hammer<T> {
 	 * @param nodes The values
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Node<U> sequence(U... values) {
-		List<Node<U>> nodeList = new ArrayList<Node<U>>();
+	public static <U> Expression<U> sequence(U... values) {
+		List<Expression<U>> expressionList = new ArrayList<Expression<U>>();
 		for (U v : values) {
 			Literal<U> literal = new Literal<U>(v);
-			nodeList.add(literal);
+			expressionList.add(literal);
 		}
-		return new Sequence<U>(nodeList);
+		return new Sequence<U>(expressionList);
 	}
 }

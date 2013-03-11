@@ -1,17 +1,17 @@
 package uk.org.alienscience.hammer.generators;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import uk.org.alienscience.hammer.Expression;
+import uk.org.alienscience.hammer.Generator;
+import uk.org.alienscience.hammer.GeneratorVisitor;
+import uk.org.alienscience.hammer.Selector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import uk.org.alienscience.hammer.Generator;
-import uk.org.alienscience.hammer.GeneratorVisitor;
-import uk.org.alienscience.hammer.Node;
-import uk.org.alienscience.hammer.Selector;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class TestVisitor {
@@ -20,12 +20,12 @@ public class TestVisitor {
 	
 	@Before
 	public void setup() {
-		List<Node<Integer>> nodes = new ArrayList<Node<Integer>>();
-		nodes.add(new Literal<Integer>(0));
-		nodes.add(new Literal<Integer>(1));
-		nodes.add(new Literal<Integer>(2));
-		nodes.add(new Literal<Integer>(3));
-		oneOf = new OneOf<Integer>(nodes);
+		List<Expression<Integer>> expressions = new ArrayList<Expression<Integer>>();
+		expressions.add(new Literal<Integer>(0));
+		expressions.add(new Literal<Integer>(1));
+		expressions.add(new Literal<Integer>(2));
+		expressions.add(new Literal<Integer>(3));
+		oneOf = new OneOf<Integer>(expressions);
 	}
 	
 	private class Visitor implements GeneratorVisitor<Integer> {
@@ -35,7 +35,7 @@ public class TestVisitor {
 		@Override
 		public void visit(Selector<Integer> selector) {
 			for (i = 0; i < 4; i++) {
-				for (Node<Integer> n : selector.select(i)) {
+				for (Expression<Integer> n : selector.select(i)) {
 					n.applyVisitor(this);
 				}
 			}

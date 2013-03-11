@@ -1,33 +1,33 @@
 package uk.org.alienscience.hammer.generators;
 
-import uk.org.alienscience.hammer.Node;
+import uk.org.alienscience.hammer.Expression;
 import uk.org.alienscience.hammer.Selector;
 
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * Select one of a list of nodes
+ * Select one of a list of expressions
  */
 public class OneOf<T> extends Selector<T> {
 
-    private final List<Node<T>> nodes;
+    private final List<Expression<T>> expressions;
 
-    public OneOf(List<Node<T>> nodes) {
-        this.nodes = nodes;
+    public OneOf(List<Expression<T>> expressions) {
+        this.expressions = expressions;
     }
 
     @Override
     public int size() {
-        return nodes.size();
+        return expressions.size();
     }
 
     @Override
-    public Iterable<Node<T>> select(int index) {
+    public Iterable<Expression<T>> select(int index) {
         return new OneOfIterator(index);
     }
 
-    private class OneOfIterator implements Iterable<Node<T>> {
+    private class OneOfIterator implements Iterable<Expression<T>> {
         private final int index;
 
         public OneOfIterator(int index) {
@@ -35,8 +35,8 @@ public class OneOf<T> extends Selector<T> {
         }
 
         @Override
-        public Iterator<Node<T>> iterator() {
-            return new Iterator<Node<T>>() {
+        public Iterator<Expression<T>> iterator() {
+            return new Iterator<Expression<T>>() {
                 boolean done = false;
 
                 @Override
@@ -45,9 +45,9 @@ public class OneOf<T> extends Selector<T> {
                 }
 
                 @Override
-                public Node<T> next() {
+                public Expression<T> next() {
                     done = true;
-                    return nodes.get(index);
+                    return expressions.get(index);
                 }
 
                 @Override

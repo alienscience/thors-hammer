@@ -5,7 +5,7 @@ package uk.org.alienscience.hammer;
  * A generator of values
  * @param <T> The type that is generated
  */
-public abstract class Generator<T> implements Node<T> {
+public abstract class Generator<T> implements Expression<T> {
 
     /**
      * Generate the item with the given index

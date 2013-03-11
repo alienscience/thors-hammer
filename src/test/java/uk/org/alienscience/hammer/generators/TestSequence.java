@@ -1,13 +1,14 @@
 package uk.org.alienscience.hammer.generators;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import uk.org.alienscience.hammer.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import uk.org.alienscience.hammer.Node;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestSequence {
 
@@ -15,18 +16,18 @@ public class TestSequence {
 
 	@Before
 	public void setup() {
-		List<Node<Integer>> nodes = new ArrayList<Node<Integer>>();
-		nodes.add(new Literal<Integer>(0));
-		nodes.add(new Literal<Integer>(1));
-		nodes.add(new Literal<Integer>(2));
-		nodes.add(new Literal<Integer>(3));
-		sequence = new Sequence<Integer>(nodes);
+		List<Expression<Integer>> expressions = new ArrayList<Expression<Integer>>();
+		expressions.add(new Literal<Integer>(0));
+		expressions.add(new Literal<Integer>(1));
+		expressions.add(new Literal<Integer>(2));
+		expressions.add(new Literal<Integer>(3));
+		sequence = new Sequence<Integer>(expressions);
 	}
 	
 	@Test
 	public void testSequence() {
 		int  i = 0;
-		for (Node<Integer> n: sequence.select(0)) {
+		for (Expression<Integer> n: sequence.select(0)) {
 			assertTrue(n instanceof Literal<?>);
 			Literal<Integer> literal = (Literal<Integer>) n;
 			assertEquals(i, (int) literal.get(0));

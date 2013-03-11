@@ -1,21 +1,21 @@
 package uk.org.alienscience.hammer.generators;
 
-import uk.org.alienscience.hammer.Node;
+import uk.org.alienscience.hammer.Expression;
 import uk.org.alienscience.hammer.Selector;
 
 import java.util.Iterator;
 
 /**
- * A selector that repeats a node from minCount .. maxCount
+ * A selector that repeats a expression from minCount .. maxCount
  */
 public class Repeat<T> extends Selector<T> {
 
-    private final Node<T> node;
+    private final Expression<T> expression;
     private final int minCount;
     private final int maxCount;
 
-    public Repeat(Node<T> node, int minCount, int maxCount) {
-        this.node = node;
+    public Repeat(Expression<T> expression, int minCount, int maxCount) {
+        this.expression = expression;
         this.minCount = minCount;
         this.maxCount = maxCount;
     }
@@ -26,12 +26,12 @@ public class Repeat<T> extends Selector<T> {
     }
 
     @Override
-    public Iterable<Node<T>> select(int index) {
+    public Iterable<Expression<T>> select(int index) {
         return new RepeatIterator(minCount + index);
     }
 
     // Iterate through the repeats minCount .. length
-    private class RepeatIterator implements Iterable<Node<T>> {
+    private class RepeatIterator implements Iterable<Expression<T>> {
         private final int length;
 
         public RepeatIterator(int length) {
@@ -40,8 +40,8 @@ public class Repeat<T> extends Selector<T> {
         }
 
         @Override
-        public Iterator<Node<T>> iterator() {
-            return new Iterator<Node<T>>() {
+        public Iterator<Expression<T>> iterator() {
+            return new Iterator<Expression<T>>() {
                 private int count = 0;
 
                 @Override
@@ -50,9 +50,9 @@ public class Repeat<T> extends Selector<T> {
                 }
 
                 @Override
-                public Node<T> next() {
+                public Expression<T> next() {
                     count++;
-                    return node;
+                    return expression;
                 }
 
                 @Override

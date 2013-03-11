@@ -2,13 +2,13 @@ package uk.org.alienscience.hammer.generators;
 
 import org.junit.Before;
 import org.junit.Test;
+import uk.org.alienscience.hammer.Expression;
 import uk.org.alienscience.hammer.Generator;
-import uk.org.alienscience.hammer.Node;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test of repeated nodes
+ * Test of repeated expressions
  */
 public class TestRepeat {
 
@@ -25,7 +25,7 @@ public class TestRepeat {
     public void testRepeatIteration() {
 
         int count = 0;
-        for (Node<String> n : repeat.select(4)) {
+        for (Expression<String> n : repeat.select(4)) {
             count += 1;
             assertEquals("a", ((Generator<String>) n).get(0));
         }
@@ -38,8 +38,8 @@ public class TestRepeat {
         Repeat<String> outer = new Repeat<String>(repeat, 0, 8);
 
         int count = 0;
-        for (Node<String> r : outer.select(4)) {
-            for (Node<String> n : ((Repeat<String>) r).select(2)) {
+        for (Expression<String> r : outer.select(4)) {
+            for (Expression<String> n : ((Repeat<String>) r).select(2)) {
                 count += 1;
                 assertEquals("a", ((Generator<String>) n).get(0));
             }
