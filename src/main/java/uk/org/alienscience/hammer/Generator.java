@@ -17,7 +17,7 @@ public abstract class Generator<T> implements Expression<T> {
     /**
      * Visit a node with the given visitor
      */
-    public void applyVisitor(GeneratorVisitor<T> visitor) {
+    public void applyVisitor(ExpressionVisitor<T> visitor) {
     	visitor.visit(this);
     }
 }

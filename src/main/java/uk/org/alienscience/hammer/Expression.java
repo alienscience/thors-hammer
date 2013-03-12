@@ -16,5 +16,5 @@ public interface Expression<T> {
      * Allow an external object to visit this node in a type safe way
      * @param visitor The object that will visit
      */
-    public void applyVisitor(GeneratorVisitor<T> visitor); 
+    public void applyVisitor(ExpressionVisitor<T> visitor);
 }
