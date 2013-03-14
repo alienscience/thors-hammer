@@ -1,32 +1,38 @@
-package uk.org.alienscience.hammer;
+package uk.org.alienscience.hammer.iterators;
+
+import uk.org.alienscience.hammer.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * An iterator that produces values that are valid according to a grammar
+ * An iterator that produces a value that is valid according to a grammar
  */
-public class ValidValues<T> implements Iterable<T> {
+public class ValidValue<T> implements Iterable<T> {
 
     private final Expression<T> expression;
     private final Sampler sampler;
 
-    public ValidValues(Expression<T> expression, Sampler sampler) {
+    private ValidValue(Expression<T> expression, Sampler sampler) {
         this.expression = expression;
         this.sampler = sampler;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new ValidValuesIterator();
+        return new ValidValueIterator();
     }
 
-    private class ValidValuesIterator implements Iterator<T>, ExpressionVisitor<T> {
+    public static <U> Iterable<U> generate(Expression<U> expression, Sampler sampler) {
+        return new ValidValue(expression, sampler);
+    }
+
+    private class ValidValueIterator implements Iterator<T>, ExpressionVisitor<T> {
 
         private final ArrayList<Generator<T>> generators;
         private final Iterator<Generator<T>> generatorIterator;
 
-        ValidValuesIterator() {
+        ValidValueIterator() {
 
             // Flatten the expression into a list of generators
             generators = new ArrayList<>();

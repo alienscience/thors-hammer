@@ -22,7 +22,7 @@ public class Repeat<T> extends Selector<T> {
 
     @Override
     public int size() {
-        return maxCount - minCount;
+        return maxCount - minCount + 1;
     }
 
     @Override

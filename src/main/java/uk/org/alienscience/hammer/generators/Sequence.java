@@ -13,8 +13,8 @@ public class Sequence<T> extends Selector<T> {
 	public Sequence(List<Expression<T>> expressions) {
 		this.expressions = expressions;
 	}
-	
-	@Override
+
+    @Override
 	public int size() {
 		return (expressions.isEmpty()) ? 0 : 1;
 	}

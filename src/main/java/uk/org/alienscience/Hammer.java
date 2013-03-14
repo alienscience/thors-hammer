@@ -1,11 +1,11 @@
 package uk.org.alienscience;
 
 import uk.org.alienscience.hammer.Expression;
-import uk.org.alienscience.hammer.ValidValues;
 import uk.org.alienscience.hammer.generators.Literal;
 import uk.org.alienscience.hammer.generators.OneOf;
 import uk.org.alienscience.hammer.generators.Repeat;
 import uk.org.alienscience.hammer.generators.Sequence;
+import uk.org.alienscience.hammer.iterators.ValidValues;
 import uk.org.alienscience.hammer.samplers.HeuristicHybrid;
 
 import java.util.ArrayList;
@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class Hammer<T> {
 
+    // TODO Look for a safe way to deal with the varargs heap corruption warnings
+
 	private final Expression<T> expression;
 	
 	// Create a Hammer from a expression
@@ -25,31 +27,31 @@ public class Hammer<T> {
 		this.expression = expression;
 	}
 
-	public Iterable<T> generateValid() {
+	public Iterable<List<T>> validLists() {
 		return new ValidValues<>(expression, new HeuristicHybrid());
 	}
-	
+
+    public Iterable<String> validStrings() {
+        // TODO implement
+        return null;
+    }
+
 	//------ Static helper methods -------------------------------------------
 	
 	/**
 	 * Create a hammer with the given expression
-	 * @param expression The expression to used to generate test values
+	 * @param expressions The expressions to be used to generate test values
 	 * @return An object that will generate test data
 	 */
-	public static <U> Hammer<U> create(Expression<U> expression) {
-		return new Hammer<>(expression);
+	public static <U> Hammer<U> create(Expression<U>... expressions) {
+        if (expressions.length == 1) {
+		    return new Hammer<>(expressions[0]);
+        }
+
+        List<Expression<U>> expressionList = Arrays.asList(expressions);
+        return new Hammer<>(new Sequence<>(expressionList));
 	}
 
-	/**
-	 * Create a hammer with the given expression
-	 * @param value The value to used to generate test values
-	 * @return An object that will generate test data
-	 */
-	public static <U> Hammer<U> create(U value) {
-		Literal<U> literal = new Literal<>(value);
-		return new Hammer<>(literal);
-	}
-	
 	/**
 	 * Repeat the given value
 	 * @param expression The value to repeat
@@ -88,7 +90,7 @@ public class Hammer<T> {
 	
 	/**
 	 * Returns one of a selection of values
-	 * @param nodes One of these values will be selected
+	 * @param values One of these values will be selected
 	 * @return An object that can be passed to other methods or used for generation
 	 */
 	public static <U> Expression<U> oneOf(U... values) {
@@ -112,7 +114,7 @@ public class Hammer<T> {
 	
 	/**
 	 * Returns a sequence of values
-	 * @param nodes The values
+	 * @param values The values
 	 * @return An object that can be passed to other methods or used for generation
 	 */
 	public static <U> Expression<U> sequence(U... values) {
@@ -123,4 +125,13 @@ public class Hammer<T> {
 		}
 		return new Sequence<>(expressionList);
 	}
+
+    /**
+     * Returns a single literal value
+     * @param value The value
+     * @return An object that can be passed to other methods or used for generation
+     */
+    public static <U> Expression<U> literal(U value) {
+        return new Literal<>(value);
+    }
 }
