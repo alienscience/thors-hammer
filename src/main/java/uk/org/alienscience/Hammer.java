@@ -1,6 +1,7 @@
 package uk.org.alienscience;
 
 import uk.org.alienscience.hammer.Expression;
+import uk.org.alienscience.hammer.conversion.ToString;
 import uk.org.alienscience.hammer.generators.Literal;
 import uk.org.alienscience.hammer.generators.OneOf;
 import uk.org.alienscience.hammer.generators.Repeat;
@@ -31,9 +32,15 @@ public class Hammer<T> {
 		return new ValidValues<>(expression, new HeuristicHybrid());
 	}
 
-    public Iterable<String> validStrings() {
+    public Iterable<List<T>> invalidLists() {
         // TODO implement
         return null;
+    }
+
+    public Iterable<String> validStrings() {
+        ValidValues<String> values = new ValidValues<>(
+                (Expression<String>) expression, new HeuristicHybrid());
+        return ToString.flatten(values);
     }
 
 	//------ Static helper methods -------------------------------------------
