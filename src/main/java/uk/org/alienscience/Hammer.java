@@ -1,6 +1,7 @@
 package uk.org.alienscience;
 
 import uk.org.alienscience.hammer.Expression;
+import uk.org.alienscience.hammer.ExpressionVisitor;
 import uk.org.alienscience.hammer.conversion.ToString;
 import uk.org.alienscience.hammer.generators.Literal;
 import uk.org.alienscience.hammer.generators.OneOf;
@@ -17,7 +18,7 @@ import java.util.List;
  *  Thors Hammer
  *
  */
-public class Hammer<T> {
+public class Hammer<T> implements Expression<T> {
 
     // TODO Look for a safe way to deal with the varargs heap corruption warnings
 
@@ -43,7 +44,19 @@ public class Hammer<T> {
         return ToString.flatten(values);
     }
 
-	//------ Static helper methods -------------------------------------------
+    //------ A Hammer can be reused as an expression ------------------------
+
+    @Override
+    public int size() {
+        return expression.size();
+    }
+
+    @Override
+    public void applyVisitor(ExpressionVisitor<T> visitor) {
+        expression.applyVisitor(visitor);
+    }
+
+    //------ Static helper methods -------------------------------------------
 	
 	/**
 	 * Create a hammer with the given expression
@@ -141,4 +154,5 @@ public class Hammer<T> {
     public static <U> Expression<U> literal(U value) {
         return new Literal<>(value);
     }
+
 }

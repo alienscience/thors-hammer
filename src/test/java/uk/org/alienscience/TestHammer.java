@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static uk.org.alienscience.Hammer.*;
 
 public class TestHammer {
@@ -46,5 +47,21 @@ public class TestHammer {
 
         }
 
+    }
+
+    @Test
+    public void testReuseExpression() {
+        Hammer<Integer> evenNumbers = Hammer.create(oneOf(2,4,6,8));
+        Hammer<Integer> oddNumbers = Hammer.create(oneOf(1,3,5,7));
+        Hammer<Integer> eoeNumbers = Hammer.create(evenNumbers, oddNumbers, evenNumbers);
+
+        int i = 0;
+        for (List<Integer> value : eoeNumbers.validLists()) {
+            assertTrue(value.get(0) % 2 == 0);
+            assertTrue(value.get(1) % 2 == 1);
+            assertTrue(value.get(2) % 2 == 0);
+            i += 1;
+            if (i > 3) break;
+        }
     }
 }
