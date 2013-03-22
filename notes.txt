@@ -4,7 +4,9 @@ Generate sequences using a peg like grammar:
   xalphas  = oneOrMore( oneOf(alpha, digit, safe, extra, escape));
   ialpha   = sequence( alpha, zeroOrMore( xalphas ));
   hostname = sequence( ialpha, zeroOrMore( ".", recurse(4) ));
-  url      = sequence( oneOf( "http","ftp","https" ), "://", hostname, "/" )
+  scheme   = oneOf("http", "ftp", "https")
+                .butNot("ldap", "xxx");
+  url      = sequence( scheme, "://", hostname, "/" )
 
   hammer = Hammer.string(url);
   hammer = Hammer.int(-5,5);

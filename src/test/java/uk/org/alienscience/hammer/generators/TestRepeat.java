@@ -27,7 +27,7 @@ public class TestRepeat {
         int count = 0;
         for (Expression<String> n : repeat.select(4)) {
             count += 1;
-            assertEquals("a", ((Generator<String>) n).get(0));
+            assertEquals("a", ((Generator<String>) n).getValid(0));
         }
 
         assertEquals(4, count);
@@ -41,7 +41,7 @@ public class TestRepeat {
         for (Expression<String> r : outer.select(4)) {
             for (Expression<String> n : ((Repeat<String>) r).select(2)) {
                 count += 1;
-                assertEquals("a", ((Generator<String>) n).get(0));
+                assertEquals("a", ((Generator<String>) n).getValid(0));
             }
         }
 

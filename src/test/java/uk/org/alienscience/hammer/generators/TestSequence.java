@@ -30,7 +30,7 @@ public class TestSequence {
 		for (Expression<Integer> n: sequence.select(0)) {
 			assertTrue(n instanceof Literal<?>);
 			Literal<Integer> literal = (Literal<Integer>) n;
-			assertEquals(i, (int) literal.get(0));
+			assertEquals(i, (int) literal.getValid(0));
 			i += 1;
 		}
 	}

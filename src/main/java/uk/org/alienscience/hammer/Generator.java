@@ -8,11 +8,18 @@ package uk.org.alienscience.hammer;
 public abstract class Generator<T> implements Expression<T> {
 
     /**
-     * Generate the item with the given index
+     * Generate a valid value with the given index
      * @param i The index
      * @return A generated item of data
      */
-    public abstract T get(int i);
+    public abstract T getValid(int i);
+
+    /**
+     * Generate an invalid value with the given index
+     * @param i The index
+     * @return A generated item of data
+     */
+    public abstract T getInvalid(int i);
 
     /**
      * Visit a node with the given visitor

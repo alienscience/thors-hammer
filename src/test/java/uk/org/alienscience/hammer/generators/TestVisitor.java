@@ -44,7 +44,7 @@ public class TestVisitor {
 		@Override
 		public void visit(Generator<Integer> generator) {
 			assertTrue(generator instanceof Literal<?>);
-			assertEquals(i, (int) generator.get(0));
+			assertEquals(i, (int) generator.getValid(0));
 		}
 		
 	}

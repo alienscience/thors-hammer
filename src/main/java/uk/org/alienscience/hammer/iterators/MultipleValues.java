@@ -1,6 +1,5 @@
 package uk.org.alienscience.hammer.iterators;
 
-import uk.org.alienscience.hammer.Expression;
 import uk.org.alienscience.hammer.Sampler;
 
 import java.util.ArrayList;
@@ -8,15 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * An iterator that produces values that are consistent with a grammar
+ * An iterator that produces many values from an iterator that produces 1 value
  */
-public class ValidValues<T> implements Iterable<List<T>> {
+public class MultipleValues<T> implements Iterable<List<T>> {
 
-    private final Expression<T> expression;
+    private final Iterable<T> iterable;
     private final Sampler sampler;
 
-    public ValidValues(Expression<T> expression, Sampler sampler) {
-        this.expression = expression;
+    public MultipleValues(Iterable<T> iterable, Sampler sampler) {
+        this.iterable = iterable;
         this.sampler = sampler;
     }
 
@@ -37,7 +36,7 @@ public class ValidValues<T> implements Iterable<List<T>> {
         public List<T> next() {
             // Generate a single valid value
             List<T> ret = new ArrayList<>();
-            for (T atom : ValidValue.generate(expression, sampler)) {
+            for (T atom : iterable) {
                 ret.add(atom);
             }
 

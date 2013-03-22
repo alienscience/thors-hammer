@@ -2,12 +2,15 @@ package uk.org.alienscience;
 
 import uk.org.alienscience.hammer.Expression;
 import uk.org.alienscience.hammer.ExpressionVisitor;
+import uk.org.alienscience.hammer.Sampler;
 import uk.org.alienscience.hammer.conversion.ToString;
 import uk.org.alienscience.hammer.generators.Literal;
 import uk.org.alienscience.hammer.generators.OneOf;
 import uk.org.alienscience.hammer.generators.Repeat;
 import uk.org.alienscience.hammer.generators.Sequence;
-import uk.org.alienscience.hammer.iterators.ValidValues;
+import uk.org.alienscience.hammer.iterators.InValidValue;
+import uk.org.alienscience.hammer.iterators.MultipleValues;
+import uk.org.alienscience.hammer.iterators.ValidValue;
 import uk.org.alienscience.hammer.samplers.HeuristicHybrid;
 
 import java.util.ArrayList;
@@ -30,18 +33,20 @@ public class Hammer<T> implements Expression<T> {
 	}
 
 	public Iterable<List<T>> validLists() {
-		return new ValidValues<>(expression, new HeuristicHybrid());
+        Sampler sampler = new HeuristicHybrid();
+        return new MultipleValues<>(ValidValue.generate(expression, sampler), sampler);
 	}
 
     public Iterable<List<T>> invalidLists() {
-        // TODO implement
-        return null;
+        Sampler sampler = new HeuristicHybrid();
+        return new MultipleValues<>(InValidValue.generate(expression, sampler), sampler);
     }
 
     public Iterable<String> validStrings() {
-        ValidValues<String> values = new ValidValues<>(
-                (Expression<String>) expression, new HeuristicHybrid());
-        return ToString.flatten(values);
+        Sampler sampler = new HeuristicHybrid();
+        Iterable<String> valueIterable = ValidValue.generate((Expression<String>) expression, sampler);
+        Iterable<List<String>> valuesIterable = new MultipleValues<>(valueIterable, sampler);
+        return ToString.flatten(valuesIterable);
     }
 
     //------ A Hammer can be reused as an expression ------------------------

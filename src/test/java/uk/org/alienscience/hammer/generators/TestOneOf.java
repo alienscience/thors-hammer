@@ -33,7 +33,7 @@ public class TestOneOf {
 			for (Expression<Integer> n : oneOf.select(i)) {
 				assertTrue(n instanceof Literal<?>);
 				Literal<Integer> literal = (Literal<Integer>) n;
-				assertEquals(i, (int) literal.get(i));
+				assertEquals(i, (int) literal.getValid(i));
 			}
 		}
 	}
