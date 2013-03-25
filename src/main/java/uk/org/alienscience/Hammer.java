@@ -8,7 +8,7 @@ import uk.org.alienscience.hammer.generators.Literal;
 import uk.org.alienscience.hammer.generators.OneOf;
 import uk.org.alienscience.hammer.generators.Repeat;
 import uk.org.alienscience.hammer.generators.Sequence;
-import uk.org.alienscience.hammer.iterators.InValidValue;
+import uk.org.alienscience.hammer.iterators.InvalidValue;
 import uk.org.alienscience.hammer.iterators.MultipleValues;
 import uk.org.alienscience.hammer.iterators.ValidValue;
 import uk.org.alienscience.hammer.samplers.HeuristicHybrid;
@@ -39,7 +39,7 @@ public class Hammer<T> implements Expression<T> {
 
     public Iterable<List<T>> invalidLists() {
         Sampler sampler = new HeuristicHybrid();
-        return new MultipleValues<>(InValidValue.generate(expression, sampler), sampler);
+        return new MultipleValues<>(InvalidValue.generate(expression, sampler), sampler);
     }
 
     public Iterable<String> validStrings() {

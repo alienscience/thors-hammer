@@ -40,3 +40,16 @@ Or if continuations were available:
        int r = randomNumber(v.size());
        appendToSample(v.get(r));
     }
+
+Generate a Tree not a list
+--------------------------
+
+  http|ftp : name . com|org
+
+  => Or -- http -- name -- . -- Or -- com
+
+
+  sequence( a, b, oneOf(1,2,3, oneOf(4,5,6), 7,8), c)
+
+  sequence - oneOf - oneOf
+

@@ -7,12 +7,12 @@ import java.util.ArrayList;
 /**
  * A class that visits an expression and creates a flat list of generators
  */
-class GeneratorList<T> implements ExpressionVisitor<T> {
+class ExpressionList<T> implements ExpressionVisitor<T> {
 
-    private final ArrayList<Generator<T>> flattened;
+    private final ArrayList<Expression<T>> flattened;
     private final Sampler sampler;
 
-    public GeneratorList(Expression<T> expression, Sampler sampler) {
+    public ExpressionList(Expression<T> expression, Sampler sampler) {
         this.sampler = sampler;
 
         // Flatten the expression 
@@ -24,12 +24,15 @@ class GeneratorList<T> implements ExpressionVisitor<T> {
      * Get the flattened list of generators
      * @return The flattened list of generators
      */
-    public ArrayList<Generator<T>> getGenerators() {
+    public ArrayList<Expression<T>> getExpressions() {
         return flattened;
     }
 
     @Override
     public void visit(Selector<T> selector) {
+    	// Make note of the selector
+        flattened.add(selector);
+		        
         // Sample a valid selector value
         int i = sampler.sample1D(selector.size());
 

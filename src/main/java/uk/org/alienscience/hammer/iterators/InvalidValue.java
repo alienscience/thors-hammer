@@ -6,16 +6,17 @@ import uk.org.alienscience.hammer.Sampler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
- * An iterator that produces a value that is valid according to a grammar
+ * An iterator that produces a value that is invalid according to a grammar
  */
-public class InValidValue<T> implements Iterable<T> {
+public class InvalidValue<T> implements Iterable<T> {
 
     private final Expression<T> expression;
     private final Sampler sampler;
 
-    private InValidValue(Expression<T> expression, Sampler sampler) {
+    private InvalidValue(Expression<T> expression, Sampler sampler) {
         this.expression = expression;
         this.sampler = sampler;
     }
@@ -26,39 +27,41 @@ public class InValidValue<T> implements Iterable<T> {
     }
 
     public static <U> Iterable<U> generate(Expression<U> expression, Sampler sampler) {
-        return new InValidValue(expression, sampler);
+        return new InvalidValue(expression, sampler);
     }
 
     private class InValidValueIterator implements Iterator<T> {
 
+        private final ArrayList<Expression<T>> expressions;
         private final ArrayList<Generator<T>> generators;
-        private final Iterator<Generator<T>> generatorIterator;
-        private final double probabilityInvalid;
 
-        int count;
-        boolean atLeastOneInvalid;
+        private Iterator<Generator<T>> generatorIterator;
+        
+        private int mutateIndex;
 
         InValidValueIterator() {
 
             // Flatten the expression into a list of generators
-            GeneratorList<T> generatorList = new GeneratorList<>(expression, sampler);
-            this.generators = generatorList.getGenerators();
+            ExpressionList<T> expressionList = new ExpressionList<>(expression, sampler);
+            this.expressions = expressionList.getExpressions();
 
-            // Extract an iterator from the generator list
-            generatorIterator = generators.iterator();
-
-            // Calculate the probability of swapping a valid value to an invalid one
-            probabilityInvalid = calculateInvalidProbability();
-            count = 0;
-            atLeastOneInvalid = false;
+            // The generators list is created later
+            this.generators =  null;
+            this.generatorIterator = null;
+            
+            // Get the index of the expression to mutate
+            mutateIndex = expressionIndexToMutate();
+           
+            // Make note of all the generators leading up to this expression
+            
+            // Mutate the expression
+           
+            // Collect all the generators following the expression
         }
 
-        private double calculateInvalidProbability() {
-            // Aim for an average of 2 invalid values and calculate the probability of swapping to
-            // an invalid value
-            int size = generators.size();
-            if (size < 2) return 1.0;
-            return 2.0 / (double) generators.size();
+        private int expressionIndexToMutate() {
+        	Random random = new Random();
+        	return random.nextInt(expressions.size());
         }
 
         @Override
@@ -68,7 +71,7 @@ public class InValidValue<T> implements Iterable<T> {
 
         @Override
         public T next() {
-            // Consider the next generator
+            // Consider the next expression
             Generator<T> generator = generatorIterator.next();
             count++;
 

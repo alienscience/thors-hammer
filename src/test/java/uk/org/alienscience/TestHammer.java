@@ -26,7 +26,7 @@ public class TestHammer {
     @Ignore
     @Test
     public void testInvalid() {
-        Hammer<Integer> hammer = Hammer.create(oneOf(1,2,3,4,5).butNot(oneOf(0,6)));
+        Hammer<Integer> hammer = Hammer.create(oneOf(1,2,3,4,5));
 
         int i = 0;
         for (List<Integer> value : hammer.invalidLists()) {
