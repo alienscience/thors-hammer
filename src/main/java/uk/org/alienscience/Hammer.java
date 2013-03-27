@@ -4,10 +4,7 @@ import uk.org.alienscience.hammer.Expression;
 import uk.org.alienscience.hammer.ExpressionVisitor;
 import uk.org.alienscience.hammer.Sampler;
 import uk.org.alienscience.hammer.conversion.ToString;
-import uk.org.alienscience.hammer.generators.Literal;
-import uk.org.alienscience.hammer.generators.OneOf;
-import uk.org.alienscience.hammer.generators.Repeat;
-import uk.org.alienscience.hammer.generators.Sequence;
+import uk.org.alienscience.hammer.generators.*;
 import uk.org.alienscience.hammer.iterators.MultipleValues;
 import uk.org.alienscience.hammer.iterators.ValidValue;
 import uk.org.alienscience.hammer.samplers.HeuristicHybrid;
@@ -31,6 +28,16 @@ public class Hammer<T> implements Expression<T> {
 	private Hammer(Expression<T> expression) {
 		this.expression = expression;
 	}
+
+    /**
+     * Repeat the expression
+     * @param minCount The minimum number of times the expression will be repeated
+     * @param maxCount The maximum number of times the expression will be repeated
+     * @return A new Hammer that generates repeated values
+     */
+    public Hammer<T> repeat(int minCount, int maxCount) {
+        return repeat(expression, minCount, maxCount);
+    }
 
 	public Iterable<List<T>> validLists() {
         Sampler sampler = new HeuristicHybrid();
@@ -63,21 +70,11 @@ public class Hammer<T> implements Expression<T> {
     }
 
     //------ Static helper methods -------------------------------------------
-	
-	/**
-	 * Create a hammer with the given expression
-	 * @param expressions The expressions to be used to generate test values
-	 * @return An object that will generate test data
-	 */
-    @SafeVarargs
-	public static <U> Hammer<U> create(final Expression<U>... expressions) {
-        if (expressions.length == 1) {
-		    return new Hammer<>(expressions[0]);
-        }
 
-        List<Expression<U>> expressionList = Arrays.asList(expressions);
-        return new Hammer<>(new Sequence<>(expressionList));
-	}
+
+    public static Hammer<String> charRange(String minChar, String maxChar) {
+        return new Hammer<>(new CharRange(minChar,maxChar));
+    }
 
 	/**
 	 * Repeat the given value
@@ -86,8 +83,8 @@ public class Hammer<T> implements Expression<T> {
 	 * @param maxCount The maximum number of repeations
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Expression<U> repeat(final Expression<U> expression, int minCount, int maxCount) {
-		return new Repeat<>(expression, minCount, maxCount);
+	public static <U> Hammer<U> repeat(final Expression<U> expression, int minCount, int maxCount) {
+		return new Hammer<>(new Repeat<>(expression, minCount, maxCount));
 	}
 
 	/**
@@ -97,10 +94,18 @@ public class Hammer<T> implements Expression<T> {
 	 * @param maxCount The maximum number of repeations
 	 * @return An object that can be passed to other methods or used for generation
 	 */
-	public static <U> Expression<U> repeat(final U value, int minCount, int maxCount) {
+	public static <U> Hammer<U> repeat(final U value, int minCount, int maxCount) {
 		Literal<U> literal = new Literal<>(value);
-		return new Repeat<>(literal, minCount, maxCount);
+		return new Hammer<>(new Repeat<>(literal, minCount, maxCount));
 	}
+
+    @SafeVarargs
+    public static <U> Hammer<U> optional(final Expression<U>... expressions) {
+        if (expressions.length == 1) {
+            return repeat(expressions[0], 0, 1);
+        }
+        return repeat(sequence(expressions), 0, 1);
+    }
 
 	/**
 	 * Returns one of a selection of values
@@ -108,10 +113,10 @@ public class Hammer<T> implements Expression<T> {
 	 * @return An object that can be passed to other methods or used for generation
 	 */
     @SafeVarargs
-	public static <U> Expression<U> oneOf(final Expression<U>... expressions) {
+	public static <U> Hammer<U> oneOf(final Expression<U>... expressions) {
 		List<Expression<U>> expressionList = new ArrayList<>();
         Collections.addAll(expressionList, expressions);
-		return new OneOf<>(expressionList);
+		return new Hammer<>(new OneOf<>(expressionList));
 	}
 	
 	/**
@@ -120,13 +125,13 @@ public class Hammer<T> implements Expression<T> {
 	 * @return An object that can be passed to other methods or used for generation
 	 */
     @SafeVarargs
-	public static <U> Expression<U> oneOf(final U... values) {
+	public static <U> Hammer<U> oneOf(final U... values) {
 		List<Expression<U>> expressionList = new ArrayList<>();
 		for (U v : values) {
 			Literal<U> literal = new Literal<>(v);
 			expressionList.add(literal);
 		}
-		return new OneOf<>(expressionList);
+		return new Hammer<>(new OneOf<>(expressionList));
 	}
 
 	/**
@@ -135,8 +140,8 @@ public class Hammer<T> implements Expression<T> {
 	 * @return An object that can be passed to other methods or used for generation
 	 */
     @SafeVarargs
-	public static <U> Expression<U> sequence(final Expression<U>... expressions) {
-		return new Sequence<>(Arrays.asList(expressions));
+	public static <U> Hammer<U> sequence(final Expression<U>... expressions) {
+		return new Hammer<>(new Sequence<>(Arrays.asList(expressions)));
 	}
 	
 	/**
@@ -145,13 +150,13 @@ public class Hammer<T> implements Expression<T> {
 	 * @return An object that can be passed to other methods or used for generation
 	 */
     @SafeVarargs
-	public static <U> Expression<U> sequence(final U... values) {
+	public static <U> Hammer<U> sequence(final U... values) {
 		List<Expression<U>> expressionList = new ArrayList<>();
 		for (U v : values) {
 			Literal<U> literal = new Literal<>(v);
 			expressionList.add(literal);
 		}
-		return new Sequence<>(expressionList);
+		return new Hammer<>(new Sequence<>(expressionList));
 	}
 
     /**
@@ -159,8 +164,8 @@ public class Hammer<T> implements Expression<T> {
      * @param value The value
      * @return An object that can be passed to other methods or used for generation
      */
-    public static <U> Expression<U> literal(final U value) {
-        return new Literal<>(value);
+    public static <U> Hammer<U> literal(final U value) {
+        return new Hammer<>(new Literal<>(value));
     }
 
 }

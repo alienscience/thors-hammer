@@ -53,3 +53,7 @@ Generate a Tree not a list
 
   sequence - oneOf - oneOf
 
+Playing with construction
+-------------------------
+
+  httpUrl = literal("http://")._(hostPort).optional
