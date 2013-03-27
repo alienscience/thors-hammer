@@ -26,7 +26,7 @@ public class ValidValue<T> implements Iterable<T> {
     }
 
     public static <U> Iterable<U> generate(Expression<U> expression, Sampler sampler) {
-        return new ValidValue(expression, sampler);
+        return new ValidValue<>(expression, sampler);
     }
 
     private class ValidValueIterator implements Iterator<T> {

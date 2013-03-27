@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class TestVisitor {
 
-	OneOf<Integer> oneOf;
+	private OneOf<Integer> oneOf;
 	
 	@Before
 	public void setup() {

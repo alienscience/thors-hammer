@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Sequence<T> extends Selector<T> {
 
-	List<Expression<T>> expressions;
+	private final List<Expression<T>> expressions;
 
 	public Sequence(List<Expression<T>> expressions) {
 		this.expressions = expressions;

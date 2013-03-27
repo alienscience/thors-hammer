@@ -15,13 +15,6 @@ public abstract class Generator<T> implements Expression<T> {
     public abstract T getValid(int i);
 
     /**
-     * Generate an invalid value with the given index
-     * @param i The index
-     * @return A generated item of data
-     */
-    public abstract T getInvalid(int i);
-
-    /**
      * Visit a node with the given visitor
      */
     public void applyVisitor(ExpressionVisitor<T> visitor) {

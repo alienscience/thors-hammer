@@ -17,8 +17,8 @@ public class TestRepeat {
 
     @Before
     public void setup() {
-        literal = new Literal<String>("a");
-        repeat = new Repeat<String>(literal, 0, 8);
+        literal = new Literal<>("a");
+        repeat = new Repeat<>(literal, 0, 8);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class TestRepeat {
 
     @Test
     public void testNestedRepeats() {
-        Repeat<String> outer = new Repeat<String>(repeat, 0, 8);
+        Repeat<String> outer = new Repeat<>(repeat, 0, 8);
 
         int count = 0;
         for (Expression<String> r : outer.select(4)) {

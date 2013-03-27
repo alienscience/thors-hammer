@@ -1,6 +1,5 @@
 package uk.org.alienscience;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,20 +19,6 @@ public class TestHammer {
             i += 1;
             if (i > 5) break;
             assertEquals(i, (int) value.get(0));
-        }
-    }
-
-    @Ignore
-    @Test
-    public void testInvalid() {
-        Hammer<Integer> hammer = Hammer.create(oneOf(1,2,3,4,5));
-
-        int i = 0;
-        for (List<Integer> value : hammer.invalidLists()) {
-            i += 1;
-            if (i > 5) break;
-            int invalidNum = value.get(0);
-            assertTrue(invalidNum == 0 || invalidNum == 6);
         }
     }
 

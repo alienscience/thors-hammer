@@ -11,7 +11,7 @@ import java.util.Random;
 public class HeuristicHybrid implements Sampler {
 
     private int numPoints;
-    private Random random;
+    private final Random random;
 
     public HeuristicHybrid() {
         numPoints = 0;

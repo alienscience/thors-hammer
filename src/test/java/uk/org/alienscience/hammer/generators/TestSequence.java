@@ -12,16 +12,16 @@ import static org.junit.Assert.assertTrue;
 
 public class TestSequence {
 
-	Sequence<Integer> sequence;
+	private Sequence<Integer> sequence;
 
 	@Before
 	public void setup() {
-		List<Expression<Integer>> expressions = new ArrayList<Expression<Integer>>();
-		expressions.add(new Literal<Integer>(0));
-		expressions.add(new Literal<Integer>(1));
-		expressions.add(new Literal<Integer>(2));
-		expressions.add(new Literal<Integer>(3));
-		sequence = new Sequence<Integer>(expressions);
+		List<Expression<Integer>> expressions = new ArrayList<>();
+		expressions.add(new Literal<>(0));
+		expressions.add(new Literal<>(1));
+		expressions.add(new Literal<>(2));
+		expressions.add(new Literal<>(3));
+		sequence = new Sequence<>(expressions);
 	}
 	
 	@Test
